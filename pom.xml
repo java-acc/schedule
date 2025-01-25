@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  ~ Copyright 2012-2025 Ken(kan.zhang-cn@hotmail.com)
+  ~ Copyright 2025 Ken(kan.zhang-cn@hotmail.com)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -24,6 +24,10 @@
     <name>schedule</name>
     <packaging>pom</packaging>
     <description>schedule</description>
+
+    <modules>
+        <module>src/schedule-tools</module>
+    </modules>
 
     <url/>
     <licenses>
