@@ -37,6 +37,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.reactive.resource.NoResourceFoundException;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -137,7 +138,10 @@ public class GlobalWebFluxExceptionHandler implements ErrorWebExceptionHandler, 
             result.setMessage(StrUtil.format(PARAM_ERROR_MESSAGE_TEMPLATE, validationErrors));
             result.setStatus(CommonError.RequestParamsInvalid.getStatus());
             result.setCode(CommonError.RequestParamsInvalid.getCode());
-            
+        } else if (cause instanceof final NoResourceFoundException e){
+            result.setMessage(CommonError.NoResource.getMessage());
+            result.setCode(CommonError.NoResource.getCode());
+            result.setStatus(CommonError.NoResource.getStatus());
         } else {
             // 处理其他未预期的异常
             LOGGER.error("未预期的异常", cause);

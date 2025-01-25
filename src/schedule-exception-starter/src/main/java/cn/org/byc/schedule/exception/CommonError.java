@@ -47,6 +47,7 @@ public enum CommonError implements ErrorCode {
     NeedAuthentication(401, "S_401_001", "Authentication required"),
     NotAuthorized(403, "S_403_001", "Not authorized to perform this operation"),
     NoEventBus(404, "S_404_001", "Event bus not found"),
+    NoResource(404, "S_404_002", "Resource not found"),
     ConcurrencyConflict(409, "S_409_001", "Concurrent operation conflict detected"),
     
     // 5xx 服务器错误
