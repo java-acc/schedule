@@ -29,6 +29,7 @@
         <module>src/schedule-tools</module>
         <module>src/schedule-exception-starter</module>
         <module>src/schedule-i18n-starter</module>
+        <module>src/schedule-ddd-starter</module>
     </modules>
 
     <url/>
@@ -131,6 +132,11 @@
             <dependency>
                 <groupId>cn.org.byc</groupId>
                 <artifactId>schedule-exception-starter</artifactId>
+                <version>${reversion}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.byc</groupId>
+                <artifactId>schedule-ddd-starter</artifactId>
                 <version>${reversion}</version>
             </dependency>
             <dependency>

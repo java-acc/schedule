@@ -1,0 +1,31 @@
+spring:
+  kafka:
+    bootstrap-servers: localhost:29092,localhost:39092,localhost:49092
+    consumer: # 消费者相关配置
+      group-id: schedule # 消费者组ID
+      auto-offset-reset: earliest # 当没有初始偏移量或偏移量超出范围时，自动重置偏移量的策略
+      enable-auto-commit: false # 是否自动提交偏移量
+#      auto-commit-interval: 1s # 自动提交偏移量的时间间隔（毫秒）
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer # 消息键的反序列化器
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer # 消息值的反序列化器
+    producer: # 生产者相关配置
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer # 消息键的序列化器
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer # 消息值的序列化器
+      acks: all # 生产者需要多少个分区副本收到消息后才认为消息发送成功
+      retries: 3 # 发送失败时的重试次数
+      batch-size: 16384 # 批量发送的大小（字节）
+#      linger-ms: 1
+      buffer-memory: 33554432 # 生产者可用的总缓冲区内存大小（字节）
+      properties:
+        linger:
+          ms: 1 # 发送前等待更多消息加入批量的时间（毫秒）
+    listener:
+      concurrency: 1 # 并发消费者数量
+      ack-mode: manual # 手动确认模式
+    template:
+      default-topic: my-default-topic # 默认主题名称
+  jackson:
+    generator:
+      write-numbers-as-strings: true
+    serialization:
+      write-dates-as-timestamps: true
