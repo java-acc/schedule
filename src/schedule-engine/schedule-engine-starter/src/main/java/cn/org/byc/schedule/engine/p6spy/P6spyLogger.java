@@ -1,0 +1,29 @@
+/*
+ * Copyright 2025 Ken(kan.zhang-cn@hotmail.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package cn.org.byc.schedule.engine.p6spy;
+
+import com.p6spy.engine.spy.appender.MessageFormattingStrategy;
+import org.apache.commons.lang3.StringUtils;
+
+public class P6spyLogger implements MessageFormattingStrategy {
+    @Override
+    public String formatMessage(int connectionId, String now, long elapsed, String category,
+                                String prepared, String sql, String url) {
+        return StringUtils.isNotBlank(sql) ? " Consume Time：" + elapsed + " ms " + now +
+                "\n Execute SQL：" + sql.replaceAll("[\\s]+", " ") + "\n" : "";
+    }
+}

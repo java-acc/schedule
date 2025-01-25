@@ -1,0 +1,64 @@
+
+spring:
+  # 数据源配置
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:mysql://localhost:3306/schedule?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+    # HikariCP配置
+    hikari:
+      # 连接池名称
+      pool-name: HikariCP-Pool
+      # 最小空闲连接数
+      minimum-idle: 5
+      # 连接池最大连接数
+      maximum-pool-size: 10
+      # 空闲连接存活最大时间，默认10分钟
+      idle-timeout: 600000
+      # 连接最大存活时间，默认30分钟
+      max-lifetime: 1800000
+      # 连接超时时间，默认30秒
+      connection-timeout: 30000
+      # 测试连接是否可用的查询语句
+      connection-test-query: SELECT 1
+      # 自动提交
+      auto-commit: true
+  
+  # Liquibase配置
+  liquibase:
+    # 配置文件路径
+    change-log: classpath:/db/changelog/db.changelog-master.yml
+    # 检查变更的间隔时间，默认关闭
+    # 数据库schema
+    default-schema: schedule
+    # 是否在启动时执行更新
+    drop-first: false
+    # 是否在启动时清空数据库
+    clear-checksums: false
+    # 用于跟踪变更历史的表名
+    database-change-log-table: DATABASE_CHANGE_LOG
+    # 用于跟踪变更锁的表名
+    database-change-log-lock-table: DATABASE_CHANGE_LOG_LOCK
+    # 变更上下文
+    contexts: dev
+    # 是否在执行迁移时进行测试运行
+    test-rollback-on-update: false
+    # 是否启用
+    enabled: true
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        cache:
+#          use_second_level_cache: true
+        generate_statistics: true
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  application:
+    name: schedule-engine
+  profiles:
+    active: local
+server:
+  port: 10001

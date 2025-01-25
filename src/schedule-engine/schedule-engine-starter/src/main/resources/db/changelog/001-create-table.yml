@@ -1,0 +1,104 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1737734400000-001-create-room-table
+      author: Ken
+      changes:
+        # 创建教学场地表
+        - createTable:
+            tableName: room
+            remarks: 教学场地表
+            columns:
+              - column:
+                  name: room_id
+                  type: bigint
+                  autoIncrement: true
+                  remarks: 教学场地编号
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: school_id
+                  type: bigint
+                  remarks: 学校编号
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(100)
+                  remarks: 名称
+                  constraints:
+                    nullable: false
+              - column:
+                  name: room_type
+                  type: tinyint
+                  remarks: 类别
+                  constraints:
+                    nullable: false
+              - column:
+                  name: capacity
+                  type: int
+                  remarks: 教学场地容量
+                  constraints:
+                    nullable: true
+              - column:
+                  name: create_time
+                  type: datetime(0)
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  remarks: 创建时间
+                  constraints:
+                    nullable: false
+              - column:
+                  name: update_time
+                  type: datetime(0)
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  defaultValueConstraintName: df_update_time
+                  remarks: 更新时间
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: int
+                  defaultValueNumeric: 1
+                  remarks: 状态
+                  constraints:
+                    nullable: false
+              - column:
+                  name: building
+                  type: varchar(100)
+                  remarks: 教学楼
+                  constraints:
+                    nullable: true
+              - column:
+                  name: origin
+                  type: int
+                  remarks: 来源
+                  constraints:
+                    nullable: true
+        
+        # 创建索引
+        - createIndex:
+            indexName: idx_school_id
+            tableName: room
+            columns:
+              - column:
+                  name: school_id
+        
+        - createIndex:
+            indexName: idx_building
+            tableName: room
+            columns:
+              - column:
+                  name: building
+        
+        - createIndex:
+            indexName: idx_status
+            tableName: room
+            columns:
+              - column:
+                  name: status
+        
+        # 修改update_time列的数据类型
+        - modifyDataType:
+            tableName: room
+            columnName: update_time
+            newDataType: "datetime(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"
