@@ -28,6 +28,7 @@
     <modules>
         <module>src/schedule-tools</module>
         <module>src/schedule-exception-starter</module>
+        <module>src/schedule-i18n-starter</module>
     </modules>
 
     <url/>
@@ -117,6 +118,21 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>cn.org.byc</groupId>
+                <artifactId>schedule-tools</artifactId>
+                <version>${reversion}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.byc</groupId>
+                <artifactId>schedule-i18n-starter</artifactId>
+                <version>${reversion}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.byc</groupId>
+                <artifactId>schedule-exception-starter</artifactId>
+                <version>${reversion}</version>
+            </dependency>
             <dependency>
                 <groupId>com.mysql</groupId>
                 <artifactId>mysql-connector-j</artifactId>
