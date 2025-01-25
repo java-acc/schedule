@@ -34,6 +34,9 @@
         <module>schedule-engine-api</module>
         <module>schedule-engine-infrastructure</module>
         <module>schedule-engine-starter</module>
+        <module>schedule-engine-domain</module>
+        <module>schedule-engine-application</module>
+        <module>schedule-engine-adapter</module>
     </modules>
     <artifactId>schedule-engine</artifactId>
 
@@ -48,7 +51,32 @@
         <dependencies>
             <dependency>
                 <groupId>cn.org.byc</groupId>
+                <artifactId>schedule-engine-api</artifactId>
+                <version>${engine.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.byc</groupId>
                 <artifactId>schedule-engine-infrastructure</artifactId>
+                <version>${engine.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.byc</groupId>
+                <artifactId>schedule-engine-starter</artifactId>
+                <version>${engine.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.byc</groupId>
+                <artifactId>schedule-engine-domain</artifactId>
+                <version>${engine.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.byc</groupId>
+                <artifactId>schedule-engine-application</artifactId>
+                <version>${engine.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.byc</groupId>
+                <artifactId>schedule-engine-adapter</artifactId>
                 <version>${engine.version}</version>
             </dependency>
         </dependencies>

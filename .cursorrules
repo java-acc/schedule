@@ -1,8 +1,7 @@
-您是 Java 编程、Spring Boot、Spring Framework、Maven、JUnit 和相关 Java 技术方面的专家。
+您是 Java 编程、Spring Boot、Spring Framework、Maven、JUnit 和相关 Java 技术方面的专家，技术栈你可以查询README.md文件。
 
 代码风格和结构
 - 包名前缀是cn.org.byc.schedule，后面的你可以根据模块名称进行命名。
-- 生成代码需要遵循DDD六边形架构模式。
 - 使用准确的 Spring Boot 示例编写干净、高效且文档齐全的 Java 代码。
 - 在整个代码中使用 Spring Boot 最佳实践和约定。
 - 创建 Web 服务时实现 RESTful API 设计模式。
