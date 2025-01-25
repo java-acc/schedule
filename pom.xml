@@ -27,6 +27,7 @@
 
     <modules>
         <module>src/schedule-tools</module>
+        <module>src/schedule-exception-starter</module>
     </modules>
 
     <url/>
