@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>cn.org.byc</groupId>
     <artifactId>schedule</artifactId>
-    <version>${reversion}</version>
+    <version>${revision}</version>
     <name>schedule</name>
     <packaging>pom</packaging>
     <description>schedule</description>
@@ -31,6 +31,8 @@
         <module>src/schedule-i18n-starter</module>
         <module>src/schedule-ddd-starter</module>
         <module>src/schedule-engine</module>
+        <module>src/schedule-jpa-starter</module>
+        <module>src/schedule-security-starter</module>
     </modules>
 
     <url/>
@@ -57,7 +59,7 @@
         <url>https://github.com/java-acc/schedule</url>
     </scm>
     <properties>
-        <reversion>0.0.1-SNAPSHOT</reversion>
+        <revision>0.0.1-SNAPSHOT</revision>
 
         <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
@@ -124,22 +126,22 @@
             <dependency>
                 <groupId>cn.org.byc</groupId>
                 <artifactId>schedule-tools</artifactId>
-                <version>${reversion}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>cn.org.byc</groupId>
                 <artifactId>schedule-i18n-starter</artifactId>
-                <version>${reversion}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>cn.org.byc</groupId>
                 <artifactId>schedule-exception-starter</artifactId>
-                <version>${reversion}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>cn.org.byc</groupId>
                 <artifactId>schedule-ddd-starter</artifactId>
-                <version>${reversion}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>com.mysql</groupId>
