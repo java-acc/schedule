@@ -14,21 +14,4 @@
  * limitations under the License.
  */
 
-package cn.org.byc.schedule.engine.infrastructure.config;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.AuditorAware;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-
-import java.util.Optional;
-
-@Configuration
-@EnableTransactionManagement
-public class JpaConfig {
-
-    @Bean
-    public AuditorAware<String> auditorProvider() {
-        return () -> Optional.of("SYSTEM");
-    }
-}
+package cn.org.byc.schedule.security;
