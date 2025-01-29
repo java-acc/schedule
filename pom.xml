@@ -202,6 +202,12 @@
                 <artifactId>p6spy</artifactId>
                 <version>${p6spy.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>cn.org.byc</groupId>
+                <artifactId>schedule-security-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

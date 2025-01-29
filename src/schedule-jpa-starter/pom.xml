@@ -39,6 +39,18 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.org.byc</groupId>
+            <artifactId>schedule-security-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-envers</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.org.byc</groupId>
+            <artifactId>schedule-tools</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
