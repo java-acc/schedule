@@ -22,7 +22,7 @@
     <parent>
         <groupId>cn.org.byc</groupId>
         <artifactId>schedule-engine</artifactId>
-        <version>${engine.version}</version>
+        <version>${revision}</version>
     </parent>
 
     <artifactId>schedule-engine-application</artifactId>

@@ -18,5 +18,5 @@ package cn.org.byc.schedule.security.constant;
 
 public interface SecurityConstants {
 
-    String HEADER_USER_ID_KEY = "X-User_Id";
+    String HEADER_USER_ID_KEY = "X-User-Id";
 }

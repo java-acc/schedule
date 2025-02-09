@@ -16,8 +16,12 @@
 
 package cn.org.byc.schedule.jpa.domain.audit;
 
+import cn.org.byc.schedule.jpa.config.SnowflakeIdGenerator;
 import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -27,6 +31,12 @@ import java.time.LocalDateTime;
 
 @MappedSuperclass
 public class BaseAuditEntity {
+
+    @Id
+    @GenericGenerator(name = "snowFlakeIdGenerator", type = SnowflakeIdGenerator.class)
+    @GeneratedValue(generator = "snowFlakeIdGenerator")
+    @Column(name = "id")
+    private Long id;
 
     @Column(nullable = false, updatable = false)
     @CreatedBy
@@ -43,6 +53,14 @@ public class BaseAuditEntity {
     @Column(nullable = false)
     @LastModifiedDate
     private LocalDateTime lastModifiedTime;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public Long getCreatedBy() {
         return createdBy;

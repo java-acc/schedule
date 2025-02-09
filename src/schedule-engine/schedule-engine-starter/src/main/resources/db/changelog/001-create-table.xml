@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!-- 创建教室表-->
+    <changeSet id="1737734400000-001-create-room-table" author="Ken">
+        <!-- 创建教学场地表 -->
+        <createTable tableName="room" remarks="教学场地表">
+            <column name="room_id" type="bigint" autoIncrement="true" remarks="教学场地编号">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="school_id" type="bigint" remarks="学校编号">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)" remarks="名称">
+                <constraints nullable="false"/>
+            </column>
+            <column name="room_type" type="tinyint" remarks="类别">
+                <constraints nullable="false"/>
+            </column>
+            <column name="capacity" type="int" remarks="教学场地容量">
+                <constraints nullable="true"/>
+            </column>
+            <column name="create_time" type="datetime(0)" defaultValueComputed="CURRENT_TIMESTAMP" remarks="创建时间">
+                <constraints nullable="false"/>
+            </column>
+            <column name="update_time" type="datetime(0)" defaultValueComputed="CURRENT_TIMESTAMP" remarks="更新时间">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="int" defaultValueNumeric="1" remarks="状态">
+                <constraints nullable="false"/>
+            </column>
+            <column name="building" type="varchar(100)" remarks="教学楼">
+                <constraints nullable="true"/>
+            </column>
+            <column name="origin" type="int" remarks="来源">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <!-- 创建索引 -->
+        <createIndex indexName="idx_school_id" tableName="room">
+            <column name="school_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_building" tableName="room">
+            <column name="building"/>
+        </createIndex>
+
+        <createIndex indexName="idx_status" tableName="room">
+            <column name="status"/>
+        </createIndex>
+
+        <!-- 修改update_time列的数据类型 -->
+        <modifyDataType tableName="room" 
+                       columnName="update_time" 
+                       newDataType="datetime(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"/>
+    </changeSet>
+
+    <!-- 创建学校表 -->
+    <changeSet id="1737734400000-002-create-school-table" author="Ken">
+        <createTable tableName="t_school" remarks="学校表">
+            <column name="id" type="bigint" remarks="主键">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)" remarks="学校名称">
+                <constraints nullable="false"/>
+            </column>
+            <column name="code" type="varchar(50)" remarks="学校代码">
+                <constraints nullable="false"/>
+            </column>
+            <column name="address" type="varchar(200)" remarks="学校地址">
+                <constraints nullable="true"/>
+            </column>
+            <column name="phone" type="varchar(20)" remarks="联系电话">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="bigint" remarks="创建人">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_time" type="datetime(0)" defaultValueComputed="CURRENT_TIMESTAMP" remarks="创建时间">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="bigint" remarks="最后修改人">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_time" type="datetime(0)" defaultValueComputed="CURRENT_TIMESTAMP" remarks="最后修改时间">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- 创建索引 -->
+        <createIndex indexName="idx_school_code" tableName="t_school">
+            <column name="code"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog> 

@@ -27,9 +27,6 @@
     </parent>
     <packaging>pom</packaging>
 
-    <version>${engine.version}</version>
-
-
     <modules>
         <module>schedule-engine-api</module>
         <module>schedule-engine-infrastructure</module>
@@ -41,8 +38,6 @@
     <artifactId>schedule-engine</artifactId>
 
     <properties>
-        <engine.version>0.0.1-SNAPSHOT</engine.version>
-
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -52,32 +47,32 @@
             <dependency>
                 <groupId>cn.org.byc</groupId>
                 <artifactId>schedule-engine-api</artifactId>
-                <version>${engine.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>cn.org.byc</groupId>
                 <artifactId>schedule-engine-infrastructure</artifactId>
-                <version>${engine.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>cn.org.byc</groupId>
                 <artifactId>schedule-engine-starter</artifactId>
-                <version>${engine.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>cn.org.byc</groupId>
                 <artifactId>schedule-engine-domain</artifactId>
-                <version>${engine.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>cn.org.byc</groupId>
                 <artifactId>schedule-engine-application</artifactId>
-                <version>${engine.version}</version>
+                <version>${revision}</version>
             </dependency>
             <dependency>
                 <groupId>cn.org.byc</groupId>
                 <artifactId>schedule-engine-adapter</artifactId>
-                <version>${engine.version}</version>
+                <version>${revision}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

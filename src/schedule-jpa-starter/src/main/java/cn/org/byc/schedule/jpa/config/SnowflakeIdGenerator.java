@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-package cn.org.byc.schedule.jpa.audit;
+package cn.org.byc.schedule.jpa.config;
 
-import org.springframework.data.domain.AuditorAware;
-import org.springframework.stereotype.Component;
+import cn.org.byc.schedule.base.id.IdFactory;
+import org.hibernate.engine.spi.SharedSessionContractImplementor;
+import org.hibernate.id.IdentifierGenerator;
 
-import java.util.Optional;
+public class SnowflakeIdGenerator implements IdentifierGenerator {
 
-@Component
-public class SecurityAuditorAware implements AuditorAware<Long> {
     @Override
-    public Optional<Long> getCurrentAuditor() {
-       return Optional.of(0L);
+    public Object generate(SharedSessionContractImplementor session, Object object) {
+        return IdFactory.getInstance().getLocalId();
     }
 }
