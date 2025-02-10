@@ -66,7 +66,6 @@ spring:
       heartbeat-interval: 3000ms
       # 服务器等待消费者心跳的最长时间
       session-timeout: 10000
-  
   # Liquibase配置
   liquibase:
     # 配置文件路径
@@ -106,7 +105,5 @@ spring:
       ddl-auto: create-drop
   application:
     name: schedule-engine
-  profiles:
-    active: local
 server:
   port: 10001
