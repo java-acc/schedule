@@ -17,80 +17,63 @@
 package cn.org.byc.schedule.jpa.domain.audit;
 
 import cn.org.byc.schedule.jpa.config.SnowflakeIdGenerator;
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+/**
+ * 审计基础实体
+ *
+ * @author Ken
+ */
+@Getter
+@Setter
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class)
 public class BaseAuditEntity {
 
+    /**
+     * 主键ID
+     */
     @Id
     @GenericGenerator(name = "snowFlakeIdGenerator", type = SnowflakeIdGenerator.class)
     @GeneratedValue(generator = "snowFlakeIdGenerator")
     @Column(name = "id")
     private Long id;
 
-    @Column(nullable = false, updatable = false)
+    /**
+     * 创建人
+     */
     @CreatedBy
+    @Column(nullable = false, updatable = false)
     private Long createdBy;
 
-    @Column(nullable = false, updatable = false)
+    /**
+     * 创建时间
+     */
     @CreatedDate
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdTime;
 
-    @Column(nullable = false)
+    /**
+     * 最后修改人
+     */
     @LastModifiedBy
+    @Column(nullable = false)
     private Long lastModifiedBy;
 
-    @Column(nullable = false)
+    /**
+     * 最后修改时间
+     */
     @LastModifiedDate
+    @Column(nullable = false)
     private LocalDateTime lastModifiedTime;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(Long createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public LocalDateTime getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(LocalDateTime createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public Long getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(Long lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public LocalDateTime getLastModifiedTime() {
-        return lastModifiedTime;
-    }
-
-    public void setLastModifiedTime(LocalDateTime lastModifiedTime) {
-        this.lastModifiedTime = lastModifiedTime;
-    }
 }

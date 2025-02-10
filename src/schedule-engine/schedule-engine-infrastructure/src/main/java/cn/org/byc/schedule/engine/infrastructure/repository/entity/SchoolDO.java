@@ -20,64 +20,41 @@ import cn.org.byc.schedule.jpa.domain.audit.BaseAuditEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+/**
+ * 学校实体
+ *
+ * @author Ken
+ */
 @Entity
+@Getter
+@Setter
 @Table(name = "t_school")
 public class SchoolDO extends BaseAuditEntity {
 
     /**
      * 学校名称
      */
-    @Column(name = "name", nullable = false, length = 100)
+    @Column(nullable = false, length = 100)
     private String name;
 
     /**
      * 学校代码
      */
-    @Column(name = "code", nullable = false, length = 50)
+    @Column(nullable = false, length = 50)
     private String code;
 
     /**
      * 学校地址
      */
-    @Column(name = "address", length = 200)
+    @Column(length = 200)
     private String address;
 
     /**
      * 学校联系电话
      */
-    @Column(name = "phone", length = 20)
+    @Column(length = 20)
     private String phone;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
 }

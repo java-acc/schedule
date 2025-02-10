@@ -25,19 +25,22 @@ import java.util.Optional;
 
 /**
  * JPA审计用户提供者，用于自动填充创建人和修改人
+ *
+ * @author Ken
  */
 @Slf4j
 @Component
 public class SecurityAuditorAware implements AuditorAware<Long> {
-    
+
     @Override
     public Optional<Long> getCurrentAuditor() {
         try {
             return UserContext.getCurrentUserId()
-                    .blockOptional();
+                    .blockOptional()
+                    .or(() -> Optional.of(0L)); // 如果获取不到用户ID，默认使用0
         } catch (Exception e) {
             log.warn("获取当前用户ID失败", e);
-            return Optional.empty();
+            return Optional.of(0L);
         }
     }
 }

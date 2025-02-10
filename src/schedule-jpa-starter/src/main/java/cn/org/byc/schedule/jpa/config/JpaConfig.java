@@ -16,11 +16,14 @@
 
 package cn.org.byc.schedule.jpa.config;
 
+import cn.org.byc.schedule.jpa.audit.SecurityAuditorAware;
 import jakarta.persistence.EntityManagerFactory;
+import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -32,21 +35,32 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+/**
+ * JPA配置类
+ *
+ * @author Ken
+ */
 @Configuration
 @EnableTransactionManagement
-@EnableJpaAuditing
+@EnableJpaAuditing(auditorAwareRef = "securityAuditorAware")
 @EnableJpaRepositories(basePackages = "cn.org.byc.schedule", transactionManagerRef = "jpaTransactionManager")
 public class JpaConfig {
 
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource")
-    public DataSource dataSource(){
+    public DataSource dataSource() {
         return DataSourceBuilder.create().build();
     }
 
     @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
+    public SecurityAuditorAware securityAuditorAware() {
+        return new SecurityAuditorAware();
+    }
+
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         HibernateJpaVendorAdapter jpaVendor = new HibernateJpaVendorAdapter();
+        jpaVendor.setGenerateDdl(false);
 
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setDataSource(dataSource());
@@ -54,6 +68,8 @@ public class JpaConfig {
         entityManagerFactory.setPackagesToScan("cn.org.byc.schedule");
 
         Properties jpaProperties = new Properties();
+        // 配置Hibernate物理命名策略
+        jpaProperties.put("hibernate.physical_naming_strategy", CamelCaseToUnderscoresNamingStrategy.class.getName());
         jpaProperties.put("hibernate.format_sql", true);
         jpaProperties.put("hibernate.jdbc.time_zone", "Asia/Shanghai");
         jpaProperties.put("hibernate.id.new_generator_mappings", false);
