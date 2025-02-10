@@ -14,28 +14,27 @@
  * limitations under the License.
  */
 
-package cn.org.byc.schedule.security.constant;
+package cn.org.byc.schedule.security.config;
+
+import cn.org.byc.schedule.security.filter.UserContextFilter;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.context.annotation.Bean;
 
 /**
- * 安全模块常量定义
- * 
+ * 安全自动配置类
+ *
  * @author Ken
  */
-public interface SecurityConstants {
+@AutoConfiguration
+public class SecurityAutoConfiguration {
 
     /**
-     * HTTP请求头中的用户ID键名
-     * <p>
-     * 用于从请求头中获取当前操作用户的ID，值类型为Long
-     * 示例：X-User-Id: 123456
+     * 配置用户上下文过滤器
+     *
+     * @return UserContextFilter实例
      */
-    String HEADER_USER_ID_KEY = "X-User-Id";
-
-    /**
-     * URL参数中的用户ID键名
-     * <p>
-     * 用于从URL查询参数中获取当前操作用户的ID，值类型为Long
-     * 示例：/api/resource?currentUserId=123456
-     */
-    String PARAM_USER_ID_KEY = "currentUserId";
-}
+    @Bean
+    public UserContextFilter userContextFilter() {
+        return new UserContextFilter();
+    }
+} 

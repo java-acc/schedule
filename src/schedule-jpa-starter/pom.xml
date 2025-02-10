@@ -42,6 +42,7 @@
         <dependency>
             <groupId>cn.org.byc</groupId>
             <artifactId>schedule-security-starter</artifactId>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>

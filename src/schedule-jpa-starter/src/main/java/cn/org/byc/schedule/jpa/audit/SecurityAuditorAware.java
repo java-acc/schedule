@@ -16,15 +16,28 @@
 
 package cn.org.byc.schedule.jpa.audit;
 
+import cn.org.byc.schedule.security.context.UserContext;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+/**
+ * JPA审计用户提供者，用于自动填充创建人和修改人
+ */
+@Slf4j
 @Component
 public class SecurityAuditorAware implements AuditorAware<Long> {
+    
     @Override
     public Optional<Long> getCurrentAuditor() {
-       return Optional.of(0L);
+        try {
+            return UserContext.getCurrentUserId()
+                    .blockOptional();
+        } catch (Exception e) {
+            log.warn("获取当前用户ID失败", e);
+            return Optional.empty();
+        }
     }
 }
