@@ -43,3 +43,5 @@ rebel.xml
 
 ### maven ###
 .flattened-pom.xml
+
+docker/open-webui/**

@@ -18,6 +18,7 @@ package cn.org.byc.schedule.security.filter;
 
 import cn.org.byc.schedule.security.constant.SecurityConstants;
 import cn.org.byc.schedule.security.context.UserContext;
+import cn.org.byc.schedule.security.model.CurrentUserEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -39,11 +40,13 @@ public class UserContextFilter implements WebFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
         ServerHttpRequest request = exchange.getRequest();
         Long userId = extractUserId(request);
-        
+
+        CurrentUserEntity currentUser = CurrentUserEntity.builder().userId(userId).build();
         if (userId != null) {
             log.debug("从请求中获取到用户ID: {}", userId);
             return chain.filter(exchange)
-                    .contextWrite(UserContext.withUserId(userId));
+                    .contextWrite(UserContext.withUserId(currentUser))
+                    .doFinally(signalType -> UserContext.clear());
         }
         
         return chain.filter(exchange);

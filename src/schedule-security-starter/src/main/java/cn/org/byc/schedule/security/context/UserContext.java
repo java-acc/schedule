@@ -16,6 +16,7 @@
 
 package cn.org.byc.schedule.security.context;
 
+import cn.org.byc.schedule.security.model.CurrentUserEntity;
 import reactor.core.publisher.Mono;
 import reactor.util.context.Context;
 
@@ -26,6 +27,7 @@ import reactor.util.context.Context;
  */
 public class UserContext {
     private static final String USER_ID_KEY = "CURRENT_USER_ID";
+    private static final ThreadLocal<CurrentUserEntity> USER_ID_THREAD_LOCAL = new ThreadLocal<>();
 
     /**
      * 获取当前用户ID
@@ -39,12 +41,29 @@ public class UserContext {
     }
 
     /**
+     * 从ThreadLocal中获取当前用户ID
+     *
+     * @return 当前用户ID
+     */
+    public static CurrentUserEntity getCurrentUserIdFromThread() {
+        return USER_ID_THREAD_LOCAL.get();
+    }
+
+    /**
      * 设置当前用户ID到上下文中
      *
      * @param userId 用户ID
      * @return Context对象
      */
-    public static Context withUserId(Long userId) {
+    public static Context withUserId(CurrentUserEntity userId) {
+        USER_ID_THREAD_LOCAL.set(userId);
         return Context.of(USER_ID_KEY, userId);
+    }
+
+    /**
+     * 清除ThreadLocal中的用户ID
+     */
+    public static void clear() {
+        USER_ID_THREAD_LOCAL.remove();
     }
 } 

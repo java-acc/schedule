@@ -35,9 +35,8 @@ public class SecurityAuditorAware implements AuditorAware<Long> {
     @Override
     public Optional<Long> getCurrentAuditor() {
         try {
-            return UserContext.getCurrentUserId()
-                    .blockOptional()
-                    .or(() -> Optional.of(0L)); // 如果获取不到用户ID，默认使用0
+            Long userId = UserContext.getCurrentUserIdFromThread().getUserId();
+            return Optional.ofNullable(userId).or(() -> Optional.of(0L));
         } catch (Exception e) {
             log.warn("获取当前用户ID失败", e);
             return Optional.of(0L);
