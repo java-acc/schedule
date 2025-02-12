@@ -21,6 +21,9 @@ import cn.org.byc.schedule.base.api.constant.ApiConstant;
 import cn.org.byc.schedule.base.constant.StringPool;
 import cn.org.byc.schedule.exception.CommonError;
 import cn.org.byc.schedule.exception.ScheduleBaseException;
+import cn.org.byc.schedule.exception.auth.AccessDeniedException;
+import cn.org.byc.schedule.exception.auth.AuthenticationException;
+import cn.org.byc.schedule.exception.auth.UnauthorizedException;
 import cn.org.byc.schedule.i18n.I18nMessage;
 import cn.org.byc.schedule.model.Result;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,9 +40,6 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.jdbc.BadSqlGrammarException;
-import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -144,15 +144,15 @@ public class GlobalWebFluxExceptionHandler implements ErrorWebExceptionHandler, 
         } else if (cause instanceof UnsupportedMediaTypeStatusException) {
             // 处理不支持的媒体类型异常
             handleError(result, CommonError.ParamFormatError, cause.getMessage());
-        } else if (cause instanceof BadCredentialsException) {
+        } else if (cause instanceof UnauthorizedException) {
+            // 处理未授权异常
+            handleError(result, CommonError.Unauthorized, cause.getMessage());
+        } else if (cause instanceof AuthenticationException) {
             // 处理认证失败异常
             handleError(result, CommonError.AuthenticationFailed, cause.getMessage());
-        } else if (cause instanceof InsufficientAuthenticationException) {
-            // 处理需要认证异常
-            handleError(result, CommonError.NeedAuthentication, cause.getMessage());
         } else if (cause instanceof AccessDeniedException) {
-            // 处理访问被拒绝异常
-            handleError(result, CommonError.NotAuthorized, cause.getMessage());
+            // 处理访问拒绝异常
+            handleError(result, CommonError.AccessDenied, cause.getMessage());
         } else if (cause instanceof NoResourceFoundException) {
             // 处理资源未找到异常
             handleError(result, CommonError.NoResource, cause.getMessage());

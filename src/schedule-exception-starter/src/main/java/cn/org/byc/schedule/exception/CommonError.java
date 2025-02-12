@@ -80,9 +80,9 @@ public enum CommonError implements ErrorCode {
     ParamOutOfRange(400, "S_400_007", "Parameter value out of range"),
 
     /**
-     * 需要认证
+     * 未登录或登录已过期
      */
-    NeedAuthentication(401, "S_401_001", "Authentication required"),
+    Unauthorized(401, "S_401_001", "Unauthorized or token expired"),
 
     /**
      * 认证失败
@@ -90,9 +90,9 @@ public enum CommonError implements ErrorCode {
     AuthenticationFailed(401, "S_401_002", "Authentication failed"),
 
     /**
-     * 无权限执行此操作
+     * 无权限访问
      */
-    NotAuthorized(403, "S_403_001", "Not authorized to perform this operation"),
+    AccessDenied(403, "S_403_001", "Access denied"),
 
     /**
      * 权限不足

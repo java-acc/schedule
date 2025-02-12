@@ -17,6 +17,7 @@
 package cn.org.byc.schedule.exception;
 
 import java.io.Serial;
+import lombok.Getter;
 
 /**
  * 调度系统基础异常类
@@ -32,6 +33,7 @@ import java.io.Serial;
  * @see ErrorCode
  * @see DomainException
  */
+@Getter
 public class ScheduleBaseException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 1L;
@@ -42,27 +44,83 @@ public class ScheduleBaseException extends RuntimeException {
     protected ErrorCode error;
 
     /**
-     * 异常参数数组，用于格式化错误消息
+     * 国际化消息参数
      */
     protected Object[] params;
 
     /**
-     * 使用指定的错误消息构造异常
+     * 构造函数
      *
-     * @param message 错误消息
+     * @param error 错误码
      */
-    public ScheduleBaseException(String message) {
-        super(message);
+    public ScheduleBaseException(ErrorCode error) {
+        super(error.getMessage());
+        this.error = error;
+        this.params = null;
     }
 
     /**
-     * 使用指定的错误消息和原因构造异常
+     * 构造函数
      *
+     * @param error 错误码
      * @param message 错误消息
-     * @param e 原因异常
      */
-    public ScheduleBaseException(String message, Throwable e) {
-        super(message, e);
+    public ScheduleBaseException(ErrorCode error, String message) {
+        super(message);
+        this.error = error;
+        this.params = null;
+    }
+
+    /**
+     * 构造函数
+     *
+     * @param error 错误码
+     * @param message 错误消息
+     * @param params 国际化消息参数
+     */
+    public ScheduleBaseException(ErrorCode error, String message, Object... params) {
+        super(message);
+        this.error = error;
+        this.params = params;
+    }
+
+    /**
+     * 构造函数
+     *
+     * @param error 错误码
+     * @param cause 原始异常
+     */
+    public ScheduleBaseException(ErrorCode error, Throwable cause) {
+        super(error.getMessage(), cause);
+        this.error = error;
+        this.params = null;
+    }
+
+    /**
+     * 构造函数
+     *
+     * @param error 错误码
+     * @param message 错误消息
+     * @param cause 原始异常
+     */
+    public ScheduleBaseException(ErrorCode error, String message, Throwable cause) {
+        super(message, cause);
+        this.error = error;
+        this.params = null;
+    }
+
+    /**
+     * 构造函数
+     *
+     * @param error 错误码
+     * @param message 错误消息
+     * @param cause 原始异常
+     * @param params 国际化消息参数
+     */
+    public ScheduleBaseException(ErrorCode error, String message, Throwable cause, Object... params) {
+        super(message, cause);
+        this.error = error;
+        this.params = params;
     }
 
     /**
@@ -81,14 +139,5 @@ public class ScheduleBaseException extends RuntimeException {
      */
     public Object[] getParams() {
         return params;
-    }
-
-    /**
-     * 设置异常参数数组
-     *
-     * @param params 参数数组
-     */
-    public void setParams(Object[] params) {
-        this.params = params;
     }
 }

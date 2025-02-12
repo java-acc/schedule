@@ -58,8 +58,7 @@ public class DomainException extends ScheduleBaseException {
      * @param message 错误消息
      */
     public DomainException(String message) {
-        super(message);
-        super.error = CommonError.UnExpected;
+        super(CommonError.UnExpected, message);
     }
 
     /**
@@ -69,9 +68,7 @@ public class DomainException extends ScheduleBaseException {
      * @param params 用于格式化消息的参数
      */
     public DomainException(String message, Object... params) {
-        super(StrUtil.format(message, params));
-        this.params = params;
-        super.error = CommonError.UnExpected;
+        super(CommonError.UnExpected, StrUtil.format(message, params), params);
     }
 
     /**
@@ -81,8 +78,7 @@ public class DomainException extends ScheduleBaseException {
      * @param cause 原因异常
      */
     public DomainException(String message, Throwable cause) {
-        super(message, cause);
-        super.error = CommonError.UnExpected;
+        super(CommonError.UnExpected, message, cause);
     }
 
     /**
@@ -93,9 +89,7 @@ public class DomainException extends ScheduleBaseException {
      * @param params 用于格式化消息的参数
      */
     public DomainException(String message, Throwable cause, Object... params) {
-        super(StrUtil.format(message, params), cause);
-        super.error = CommonError.UnExpected;
-        this.params = params;
+        super(CommonError.UnExpected, StrUtil.format(message, params), cause, params);
     }
 
     /**
@@ -104,8 +98,7 @@ public class DomainException extends ScheduleBaseException {
      * @param error 错误码
      */
     public DomainException(ErrorCode error) {
-        super(error.getMessage());
-        super.error = error;
+        super(error);
     }
 
     /**
@@ -115,8 +108,7 @@ public class DomainException extends ScheduleBaseException {
      * @param e 原因异常
      */
     public DomainException(ErrorCode error, Throwable e) {
-        super(error.getMessage(), e);
-        super.error = error;
+        super(error, e);
     }
 
     /**
@@ -127,8 +119,6 @@ public class DomainException extends ScheduleBaseException {
      * @param params 用于格式化消息的参数
      */
     public DomainException(ErrorCode error, Throwable e, Object... params) {
-        super(error.getMessage(), e);
-        this.params = params;
-        super.error = error;
+        super(error, error.getMessage(), e, params);
     }
 }
