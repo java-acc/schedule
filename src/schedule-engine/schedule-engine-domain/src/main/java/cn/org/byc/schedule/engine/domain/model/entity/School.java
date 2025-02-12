@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 学校领域实体
+ * 学校领域对象
  *
  * @author Ken
  */
@@ -17,9 +17,14 @@ import lombok.NoArgsConstructor;
 public class School {
 
     /**
-     * 主键ID
+     * 学校ID
      */
     private Long id;
+
+    /**
+     * 学校编码
+     */
+    private String code;
 
     /**
      * 学校名称
@@ -27,17 +32,17 @@ public class School {
     private String name;
 
     /**
-     * 学校代码
-     */
-    private String code;
-
-    /**
      * 学校地址
      */
     private String address;
 
     /**
-     * 学校联系电话
+     * 联系电话
      */
     private String phone;
+
+    /**
+     * 备注
+     */
+    private String remark;
 } 

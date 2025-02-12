@@ -33,6 +33,7 @@
         <module>src/schedule-engine</module>
         <module>src/schedule-jpa-starter</module>
         <module>src/schedule-security-starter</module>
+        <module>src/schedule-knife4j-starter</module>
     </modules>
 
     <url/>
@@ -87,6 +88,9 @@
         <kafka-client.version>3.9.0</kafka-client.version>
         <guava.version>33.4.0-jre</guava.version>
         <p6spy.version>3.9.1</p6spy.version>
+        <springdoc-openapi-starter-webflux.version>2.3.0</springdoc-openapi-starter-webflux.version>
+        <knife4j.version>4.5.0</knife4j.version>
+        <swagger.version>2.2.19</swagger.version>
 
         <argLine>-Dfile.encoding=UTF-8</argLine>
         <maven.test.skip>false</maven.test.skip>
@@ -145,9 +149,20 @@
             </dependency>
             <dependency>
                 <groupId>cn.org.byc</groupId>
+                <artifactId>schedule-security-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.org.byc</groupId>
                 <artifactId>schedule-jpa-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>cn.org.byc</groupId>
+                <artifactId>schedule-knife4j-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.mysql</groupId>
                 <artifactId>mysql-connector-j</artifactId>
@@ -207,11 +222,30 @@
                 <artifactId>p6spy</artifactId>
                 <version>${p6spy.version}</version>
             </dependency>
-
             <dependency>
-                <groupId>cn.org.byc</groupId>
-                <artifactId>schedule-security-starter</artifactId>
-                <version>${revision}</version>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-ui</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webflux-ui</artifactId>
+                <version>${springdoc-openapi-starter-webflux.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webflux-api</artifactId>
+                <version>${springdoc-openapi-starter-webflux.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger.core.v3</groupId>
+                <artifactId>swagger-annotations-jakarta</artifactId>
+                <version>${swagger.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -469,6 +503,7 @@
                     <compilerVersion>${maven.compiler.source}</compilerVersion>
                     <showDeprecation>true</showDeprecation>
                     <showWarnings>true</showWarnings>
+                    <parameters>true</parameters>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.mapstruct</groupId>

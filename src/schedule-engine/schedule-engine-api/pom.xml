@@ -42,5 +42,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
+        <dependency>
+            <groupId>cn.org.byc</groupId>
+            <artifactId>schedule-engine-domain</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>cn.org.byc</groupId>
+            <artifactId>schedule-knife4j-starter</artifactId>
+        </dependency>
     </dependencies>
 </project>

@@ -8,7 +8,7 @@
     <!-- 创建教室表-->
     <changeSet id="1737734400000-001-create-room-table" author="Ken">
         <!-- 创建教学场地表 -->
-        <createTable tableName="room" remarks="教学场地表">
+        <createTable tableName="t_room" remarks="教学场地表">
             <column name="room_id" type="bigint" autoIncrement="true" remarks="教学场地编号">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -42,20 +42,12 @@
         </createTable>
 
         <!-- 创建索引 -->
-        <createIndex indexName="idx_school_id" tableName="room">
+        <createIndex indexName="idx_school_id" tableName="t_room">
             <column name="school_id"/>
         </createIndex>
 
-        <createIndex indexName="idx_building" tableName="room">
-            <column name="building"/>
-        </createIndex>
-
-        <createIndex indexName="idx_status" tableName="room">
-            <column name="status"/>
-        </createIndex>
-
         <!-- 修改update_time列的数据类型 -->
-        <modifyDataType tableName="room" 
+        <modifyDataType tableName="t_room"
                        columnName="update_time" 
                        newDataType="datetime(0) DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP"/>
     </changeSet>
@@ -95,6 +87,94 @@
         <!-- 创建索引 -->
         <createIndex indexName="idx_school_code" tableName="t_school">
             <column name="code"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- 创建规则集表 -->
+    <changeSet id="1737734400000-003-create-rule-set-table" author="Ken">
+        <createTable tableName="t_rule_set" remarks="排课规则集表">
+            <column name="id" type="bigint" remarks="主键">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="time_table_id" type="bigint" remarks="课表编号">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rule_id" type="bigint" remarks="关联的各个规则表主键">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rule_type" type="varchar(50)" remarks="规则类型">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rule_object" type="varchar(500)" remarks="规则对象">
+                <constraints nullable="true"/>
+            </column>
+            <column name="rule_detail" type="varchar(2000)" remarks="规则详情">
+                <constraints nullable="true"/>
+            </column>
+            <column name="rule_weight" type="varchar(50)" remarks="规则权重">
+                <constraints nullable="true"/>
+            </column>
+            <column name="time_table_input_id" type="bigint" remarks="课表输入表主键">
+                <constraints nullable="true"/>
+            </column>
+            <column name="forbid_class_place_list" type="varchar(1000)" remarks="禁排的课节列表">
+                <constraints nullable="true"/>
+            </column>
+            <column name="fixed_class_place_list" type="varchar(1000)" remarks="固定课节编号列表">
+                <constraints nullable="true"/>
+            </column>
+            <column name="continuity_number" type="int" remarks="连排次数">
+                <constraints nullable="true"/>
+            </column>
+            <column name="not_continuity_number" type="int" remarks="不连排课节序号">
+                <constraints nullable="true"/>
+            </column>
+            <column name="neat_subject_id" type="bigint" remarks="教案平头科目编号">
+                <constraints nullable="true"/>
+            </column>
+            <column name="neat_class_id_list" type="varchar(1000)" remarks="教案平头班级编号列表">
+                <constraints nullable="true"/>
+            </column>
+            <column name="subject_mutex_id_list" type="varchar(1000)" remarks="科目互斥列表">
+                <constraints nullable="true"/>
+            </column>
+            <column name="same_time_input_id_list" type="varchar(1000)" remarks="同时上课输入项编号列表">
+                <constraints nullable="true"/>
+            </column>
+            <column name="teacher_id_list" type="varchar(1000)" remarks="老师编号列表">
+                <constraints nullable="true"/>
+            </column>
+            <column name="max_class_period_number" type="int" remarks="老师每天最大课时数">
+                <constraints nullable="true"/>
+            </column>
+            <column name="max_work_day_number" type="int" remarks="老师每周最大天数">
+                <constraints nullable="true"/>
+            </column>
+            <column name="created_by" type="bigint" remarks="创建人">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_time" type="datetime(0)" defaultValueComputed="CURRENT_TIMESTAMP" remarks="创建时间">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_by" type="bigint" remarks="最后修改人">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_modified_time" type="datetime(0)" defaultValueComputed="CURRENT_TIMESTAMP" remarks="最后修改时间">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <!-- 创建索引 -->
+        <createIndex indexName="idx_rule_set_time_table_id" tableName="t_rule_set">
+            <column name="time_table_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_rule_set_rule_id" tableName="t_rule_set">
+            <column name="rule_id"/>
+        </createIndex>
+
+        <createIndex indexName="idx_rule_set_rule_type" tableName="t_rule_set">
+            <column name="rule_type"/>
         </createIndex>
     </changeSet>
 

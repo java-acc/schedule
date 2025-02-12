@@ -56,8 +56,8 @@
             <artifactId>schedule-engine-adapter</artifactId>
         </dependency>
         <dependency>
-            <groupId>cn.org.byc</groupId>
-            <artifactId>schedule-engine-infrastructure</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
     </dependencies>
 </project>

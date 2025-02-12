@@ -108,4 +108,4 @@ spring:
   application:
     name: schedule-engine
 server:
-  port: 10001
+  port: 8081

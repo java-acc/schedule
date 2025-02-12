@@ -1,6 +1,9 @@
 package cn.org.byc.schedule.engine.domain.repository;
 
+import cn.org.byc.schedule.base.api.model.Result;
 import cn.org.byc.schedule.engine.domain.model.entity.School;
+import cn.org.byc.schedule.engine.domain.model.query.SchoolQuery;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -11,26 +14,50 @@ import reactor.core.publisher.Mono;
 public interface SchoolRepository {
 
     /**
-     * 保存学校信息
+     * 保存学校
      *
      * @param school 学校信息
-     * @return 保存后的学校信息
+     * @return 保存结果
      */
-    Mono<School> save(School school);
+    Mono<Result<School>> save(School school);
 
     /**
-     * 根据ID查询学校信息
+     * 更新学校
+     *
+     * @param school 学校信息
+     * @return 更新结果
+     */
+    Mono<Result<School>> update(School school);
+
+    /**
+     * 根据ID查询学校
      *
      * @param id 学校ID
-     * @return 学校信息
+     * @return 查询结果
      */
-    Mono<School> findById(Long id);
+    Mono<Result<School>> findById(Long id);
 
     /**
-     * 根据学校代码查询学校信息
+     * 根据编码查询学校
      *
-     * @param code 学校代码
-     * @return 学校信息
+     * @param code 学校编码
+     * @return 查询结果
      */
-    Mono<School> findByCode(String code);
+    Mono<Result<School>> findByCode(String code);
+
+    /**
+     * 查询学校列表
+     *
+     * @param query 查询条件
+     * @return 查询结果
+     */
+    Flux<School> query(SchoolQuery query);
+
+    /**
+     * 删除学校
+     *
+     * @param id 学校ID
+     * @return 删除结果
+     */
+    Mono<Result<Void>> deleteById(Long id);
 } 

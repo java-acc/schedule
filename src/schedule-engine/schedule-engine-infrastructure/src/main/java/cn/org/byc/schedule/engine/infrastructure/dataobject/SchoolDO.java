@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package cn.org.byc.schedule.engine.infrastructure.repository.entity;
+package cn.org.byc.schedule.engine.infrastructure.dataobject;
 
 import cn.org.byc.schedule.jpa.domain.audit.BaseAuditEntity;
 import jakarta.persistence.Column;
@@ -24,7 +24,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 学校实体
+ * 学校数据库实体
  *
  * @author Ken
  */
@@ -37,24 +37,30 @@ public class SchoolDO extends BaseAuditEntity {
     /**
      * 学校名称
      */
-    @Column(nullable = false, length = 100)
+    @Column(name = "name", nullable = false, length = 100)
     private String name;
 
     /**
      * 学校代码
      */
-    @Column(nullable = false, length = 50)
+    @Column(name = "code", nullable = false, length = 50)
     private String code;
 
     /**
      * 学校地址
      */
-    @Column(length = 200)
+    @Column(name = "address", length = 200)
     private String address;
 
     /**
      * 学校联系电话
      */
-    @Column(length = 20)
+    @Column(name = "phone", length = 20)
     private String phone;
+
+    /**
+     * 备注
+     */
+    @Column(name = "remark", length = 500)
+    private String remark;
 }

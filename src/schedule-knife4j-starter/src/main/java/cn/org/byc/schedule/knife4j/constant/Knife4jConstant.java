@@ -14,23 +14,11 @@
  * limitations under the License.
  */
 
-package cn.org.byc.schedule.engine.infrastructure.repository.mapper;
+package cn.org.byc.schedule.knife4j.constant;
 
-import cn.org.byc.schedule.engine.infrastructure.dataobject.SchoolDO;
-import org.springframework.data.jpa.repository.JpaRepository;
-
-/**
- * 学校数据访问接口
- *
- * @author Ken
- */
-public interface SchoolDao extends JpaRepository<SchoolDO, Long> {
-
-    /**
-     * 根据学校代码查询学校信息
-     *
-     * @param code 学校代码
-     * @return 学校信息
-     */
-    SchoolDO findByCode(String code);
+public interface Knife4jConstant {
+    String BASE_PACKAGES = "cn.org.byc";
+    String APPLICATION_VERSION = "1.0.0";
+    String AUTHORIZATION_HEADER = "Authorization";
+    String TENANT_ID_HEADER = "X-Tenant-Id";
 }

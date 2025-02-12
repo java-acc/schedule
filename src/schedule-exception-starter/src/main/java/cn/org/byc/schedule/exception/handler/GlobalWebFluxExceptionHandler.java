@@ -18,11 +18,11 @@ package cn.org.byc.schedule.exception.handler;
 
 import cn.hutool.core.util.StrUtil;
 import cn.org.byc.schedule.base.api.constant.ApiConstant;
-import cn.org.byc.schedule.base.api.model.Result;
 import cn.org.byc.schedule.base.constant.StringPool;
 import cn.org.byc.schedule.exception.CommonError;
 import cn.org.byc.schedule.exception.ScheduleBaseException;
 import cn.org.byc.schedule.i18n.I18nMessage;
+import cn.org.byc.schedule.model.Result;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.slf4j.Logger;
@@ -31,16 +31,31 @@ import org.slf4j.MDC;
 import org.springframework.boot.web.reactive.error.ErrorWebExceptionHandler;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.buffer.DataBuffer;
+import org.springframework.dao.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.jdbc.BadSqlGrammarException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.support.WebExchangeBindException;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.reactive.resource.NoResourceFoundException;
 import org.springframework.web.server.ServerWebExchange;
+import org.springframework.web.server.UnsupportedMediaTypeStatusException;
 import reactor.core.publisher.Mono;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
+import java.sql.SQLException;
+import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 
 /**
@@ -99,13 +114,6 @@ public class GlobalWebFluxExceptionHandler implements ErrorWebExceptionHandler, 
 
     /**
      * 处理异常并生成响应
-     * 
-     * <p>根据不同的异常类型生成相应的错误响应：
-     * <ul>
-     *     <li>ScheduleBaseException - 使用错误码和国际化消息</li>
-     *     <li>MethodArgumentNotValidException - 处理参数验证错误</li>
-     *     <li>其他异常 - 使用通用错误码和原始错误消息</li>
-     * </ul>
      *
      * @param exchange WebFlux的服务器交换对象
      * @param cause 捕获的异常
@@ -124,30 +132,58 @@ public class GlobalWebFluxExceptionHandler implements ErrorWebExceptionHandler, 
         // 处理不同类型的异常
         if (cause instanceof ScheduleBaseException e) {
             // 处理自定义业务异常
-            result.setCode(e.getError().getCode());
-            result.setStatus(e.getError().getStatus());
-            // 如果有参数，使用国际化消息；否则使用原始消息
-            String message = e.getParams() == null ? 
-                e.getMessage() : 
-                i18nMessage.toLocale(e.getError().getCode(), e.getParams());
-            result.setMessage(StrUtil.format(ERROR_MESSAGE_TEMPLATE, message));
-            
-        } else if (cause instanceof final MethodArgumentNotValidException e) {
+            handleScheduleBaseException(result, e);
+        } else if (cause instanceof MethodArgumentNotValidException || 
+                  cause instanceof WebExchangeBindException ||
+                  cause instanceof BindException) {
             // 处理参数验证异常
-            String validationErrors = formatValidationErrors(e.getBindingResult());
-            result.setMessage(StrUtil.format(PARAM_ERROR_MESSAGE_TEMPLATE, validationErrors));
-            result.setStatus(CommonError.RequestParamsInvalid.getStatus());
-            result.setCode(CommonError.RequestParamsInvalid.getCode());
-        } else if (cause instanceof final NoResourceFoundException e){
-            result.setMessage(CommonError.NoResource.getMessage());
-            result.setCode(CommonError.NoResource.getCode());
-            result.setStatus(CommonError.NoResource.getStatus());
+            handleValidationException(result, (BindingResult) cause);
+        } else if (cause instanceof MethodArgumentTypeMismatchException) {
+            // 处理参数类型不匹配异常
+            handleError(result, CommonError.ParamTypeError, cause.getMessage());
+        } else if (cause instanceof UnsupportedMediaTypeStatusException) {
+            // 处理不支持的媒体类型异常
+            handleError(result, CommonError.ParamFormatError, cause.getMessage());
+        } else if (cause instanceof BadCredentialsException) {
+            // 处理认证失败异常
+            handleError(result, CommonError.AuthenticationFailed, cause.getMessage());
+        } else if (cause instanceof InsufficientAuthenticationException) {
+            // 处理需要认证异常
+            handleError(result, CommonError.NeedAuthentication, cause.getMessage());
+        } else if (cause instanceof AccessDeniedException) {
+            // 处理访问被拒绝异常
+            handleError(result, CommonError.NotAuthorized, cause.getMessage());
+        } else if (cause instanceof NoResourceFoundException) {
+            // 处理资源未找到异常
+            handleError(result, CommonError.NoResource, cause.getMessage());
+        } else if (cause instanceof ConcurrencyFailureException) {
+            // 处理并发冲突异常
+            handleError(result, CommonError.ConcurrencyConflict, cause.getMessage());
+        } else if (cause instanceof BadSqlGrammarException) {
+            // 处理SQL语法错误
+            handleError(result, CommonError.SqlSyntaxError, cause.getMessage());
+        } else if (cause instanceof DataIntegrityViolationException) {
+            // 处理数据完整性违反异常
+            handleError(result, CommonError.DatabaseConstraintViolation, cause.getMessage());
+        } else if (cause instanceof DeadlockLoserDataAccessException) {
+            // 处理数据库死锁异常
+            handleError(result, CommonError.DatabaseDeadlock, cause.getMessage());
+        } else if (cause instanceof QueryTimeoutException || cause instanceof TimeoutException) {
+            // 处理数据库查询超时异常
+            handleError(result, CommonError.DatabaseTimeout, cause.getMessage());
+        } else if (cause instanceof DataAccessException || cause instanceof SQLException) {
+            // 处理数据库访问异常
+            handleError(result, CommonError.DatabaseConnectionError, cause.getMessage());
+        } else if (cause instanceof ConnectException || cause instanceof SocketTimeoutException) {
+            // 处理网络连接异常
+            handleError(result, CommonError.NetworkConnectionError, cause.getMessage());
+        } else if (cause instanceof FileNotFoundException || cause instanceof IOException) {
+            // 处理文件操作异常
+            handleError(result, CommonError.FileOperationError, cause.getMessage());
         } else {
             // 处理其他未预期的异常
             LOGGER.error("未预期的异常", cause);
-            result.setMessage(StrUtil.format(UNEXPECTED_ERROR_MESSAGE_TEMPLATE, cause.getMessage()));
-            result.setCode(CommonError.UnExpected.getCode());
-            result.setStatus(CommonError.UnExpected.getStatus());
+            handleError(result, CommonError.UnExpected, cause.getMessage());
         }
 
         // 设置响应头
@@ -163,10 +199,48 @@ public class GlobalWebFluxExceptionHandler implements ErrorWebExceptionHandler, 
     }
 
     /**
+     * 处理自定义业务异常
+     *
+     * @param result 结果对象
+     * @param e 业务异常
+     */
+    private void handleScheduleBaseException(Result<Void> result, ScheduleBaseException e) {
+        result.setCode(e.getError().getCode());
+        result.setStatus(e.getError().getStatus());
+        String message = e.getParams() == null ? 
+            e.getMessage() : 
+            i18nMessage.toLocale(e.getError().getCode(), e.getParams());
+        result.setMessage(StrUtil.format(ERROR_MESSAGE_TEMPLATE, message));
+    }
+
+    /**
+     * 处理参数验证异常
+     *
+     * @param result 结果对象
+     * @param bindingResult 绑定结果
+     */
+    private void handleValidationException(Result<Void> result, BindingResult bindingResult) {
+        String validationErrors = formatValidationErrors(bindingResult);
+        result.setMessage(StrUtil.format(PARAM_ERROR_MESSAGE_TEMPLATE, validationErrors));
+        result.setStatus(CommonError.RequestParamsInvalid.getStatus());
+        result.setCode(CommonError.RequestParamsInvalid.getCode());
+    }
+
+    /**
+     * 处理通用错误
+     *
+     * @param result 结果对象
+     * @param error 错误枚举
+     * @param message 错误消息
+     */
+    private void handleError(Result<Void> result, CommonError error, String message) {
+        result.setMessage(StrUtil.format(ERROR_MESSAGE_TEMPLATE, message));
+        result.setCode(error.getCode());
+        result.setStatus(error.getStatus());
+    }
+
+    /**
      * 格式化参数验证错误信息
-     * 
-     * <p>将验证错误信息转换为统一的文本格式。
-     * 格式示例：字段1：错误信息1；字段2：错误信息2
      *
      * @param result 包含验证错误信息的BindingResult
      * @return 格式化后的错误信息
